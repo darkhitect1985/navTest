@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Platform,
+  Alert,
+  View,
+} from 'react-native';
 
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
@@ -18,6 +25,18 @@ const MapScreen = (props) => {
     });
   };
 
+  const savedPickedLocationHandler = useCallback(() => {
+    if (!selectedLocation) {
+      Alert.alert(
+        'No location picked',
+        'Please pick location prior to saving',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+    props.navigation.navigate('NewPlace', { pickedLocation: selectedLocation });
+  }, [selectedLocation]);
+
   let markerCoordinates;
 
   if (selectedLocation) {
@@ -27,6 +46,19 @@ const MapScreen = (props) => {
     };
   }
 
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={savedPickedLocationHandler}
+          style={styles.headerButton}
+        >
+          <Text style={styles.headerButtonText}>Save</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [savedPickedLocationHandler]);
+
   return (
     <MapView
       region={mapRegion}
@@ -34,7 +66,15 @@ const MapScreen = (props) => {
       onPress={selectLocationHandler}
     >
       {markerCoordinates && (
-        <Marker title="Picked Location" coordinate={markerCoordinates}></Marker>
+        <Marker
+          draggable
+          title="Picked Location"
+          coordinate={markerCoordinates}
+        >
+          <View style={{ backgroundColor: 'red', padding: 10 }}>
+            <Text>SF</Text>
+          </View>
+        </Marker>
       )}
     </MapView>
   );
@@ -46,6 +86,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  headerButton: {
+    marginHorizontal: 20,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: Platform.OS === 'android' ? 'white' : Colors.primary,
   },
 });
 

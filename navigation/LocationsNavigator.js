@@ -23,12 +23,12 @@ export const LocationsNavigator = () => {
       <LocationsStackNavigator.Screen
         name="StartUp"
         component={StartupScreen}
-        // options={productsOverviewScreenOptions}
+        //options={productsOverviewScreenOptions}
       />
       <LocationsStackNavigator.Screen
         name="MapScreen"
         component={MapScreen}
-        // options={productDetailScreenOptions}
+        //options={screenOptions}
       />
       <LocationsStackNavigator.Screen
         name="NewPlace"
