@@ -18,6 +18,7 @@ const NewPlaceScreen = (props) => {
   //   return;
   // } else {
   //   console.log(props.route.params);
+
   // }
 
   return (

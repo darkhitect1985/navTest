@@ -20,9 +20,9 @@ const LocationPicker = (props) => {
 
   useEffect(() => {
     if (props.route.params?.pickedLocation) {
-      const Picked = props.route.params.pickedLocation;
-      console.log(Picked);
-      setPickedLocation(Picked);
+      const mapPickedLocation = props.route.params.pickedLocation;
+      console.log(mapPickedLocation);
+      setPickedLocation(mapPickedLocation);
     }
   }, [props.route.params?.pickedLocation]);
 

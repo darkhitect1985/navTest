@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 
+import MarkerSetup from '../components/MarkerSetup';
+
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
   const mapRegion = {
@@ -60,29 +62,39 @@ const MapScreen = (props) => {
   }, [savedPickedLocationHandler]);
 
   return (
-    <MapView
-      region={mapRegion}
-      style={styles.mapStyle}
-      onPress={selectLocationHandler}
-    >
-      {markerCoordinates && (
-        <Marker
-          draggable
-          title="Picked Location"
-          coordinate={markerCoordinates}
-        >
-          <View style={{ backgroundColor: 'red', padding: 10 }}>
-            <Text>SF</Text>
-          </View>
-        </Marker>
+    <View style={styles.container}>
+      <MapView
+        region={mapRegion}
+        style={styles.mapStyle}
+        onPress={selectLocationHandler}
+      >
+        {markerCoordinates && (
+          <Marker
+            draggable
+            title="Picked Location"
+            coordinate={markerCoordinates}
+          >
+            {/* <View style={{ backgroundColor: 'red', padding: 10 }}>
+              <Text>DI</Text>
+            </View> */}
+          </Marker>
+        )}
+      </MapView>
+      {selectedLocation && (
+        <View style={styles.setupContainer}>
+          <MarkerSetup />
+        </View>
       )}
-    </MapView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  mapStyle: {
+  container: {
     flex: 1,
+  },
+  mapStyle: {
+    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -93,6 +105,13 @@ const styles = StyleSheet.create({
   headerButtonText: {
     fontSize: 16,
     color: Platform.OS === 'android' ? 'white' : Colors.primary,
+  },
+  setupContainer: {
+    paddingBottom: 50,
+    width: '100%',
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 0,
   },
 });
 
