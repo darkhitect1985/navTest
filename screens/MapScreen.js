@@ -74,9 +74,9 @@ const MapScreen = (props) => {
             title="Picked Location"
             coordinate={markerCoordinates}
           >
-            {/* <View style={{ backgroundColor: 'red', padding: 10 }}>
-              <Text>DI</Text>
-            </View> */}
+            <View style={{ backgroundColor: 'yellow', padding: 10 }}>
+              <Text>Kamp</Text>
+            </View>
           </Marker>
         )}
       </MapView>
