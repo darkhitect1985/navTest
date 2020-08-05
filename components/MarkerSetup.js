@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Picker, TextInput, StyleSheet } from 'react-native';
+
 import Colors from '../constants/Colors';
 
 const MarkerSetup = (props) => {
-  const [selectedValue, setSelectedValue] = useState('red');
-  const [inputValue, setInputValue] = React.useState('');
-
   return (
     <View style={styles.container}>
       <Text>Please enter location name and Marker color</Text>
       <View>
         <TextInput
           style={{ ...styles.inputContainer, padding: 10 }}
-          onChangeText={(text) => setInputValue(text)}
-          value={inputValue}
+          onChangeText={(text) => props.onEnteredValue(text)}
+          value={props.inputValue}
         />
       </View>
       <View style={styles.inputContainer}>
         <Picker
-          selectedValue={selectedValue}
+          selectedValue={props.selectedValue}
           style={styles.pickerStyle}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+          onValueChange={(itemValue, itemIndex) =>
+            props.onPickerChange(itemValue)
+          }
         >
           <Picker.Item label="Black" value="black" />
           <Picker.Item label="Brown" value="brown" />
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginLeft: 20,
     marginRight: 20,
+    marginBottom: 20,
     borderColor: Colors.primary,
     borderWidth: 1,
     borderRadius: 10,

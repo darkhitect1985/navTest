@@ -1,4 +1,5 @@
 import { SET_LOCATIONS } from '../actions/locations';
+import Location from '../../models/location';
 
 const initialState = {
   locations: [],
@@ -7,21 +8,19 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_LOCATIONS:
+      const newLocation = new Location(
+        new Date().getTime().toString(),
+        action.title,
+        action.color,
+        false,
+        action.lng,
+        action.lat
+      );
+      //Location (id, title, color, isCurrent, locaLang, locLat)
       return {
         ...state,
-        locations: [...state.locations, action.location],
+        locations: state.locations.concat(newLocation),
       };
-    // case ADD_ORDER:
-    //   const newOrder = new Order(
-    //     action.orderData.id,
-    //     action.orderData.items,
-    //     action.orderData.amount,
-    //     action.orderData.date
-    //   );
-    //   return {
-    //     ...state,
-    //     orders: state.orders.concat(newOrder)
-    //   };
   }
   return state;
 };

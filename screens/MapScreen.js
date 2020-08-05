@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import MapView, { Marker } from 'react-native-maps';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -11,8 +12,23 @@ import {
 
 import MarkerSetup from '../components/MarkerSetup';
 
+import { setLocation } from '../store/actions/locations';
+
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
+  const [selectedValue, setSelectedValue] = useState('red');
+  const [inputValue, setInputValue] = useState('');
+
+  const dispatch = useDispatch();
+
+  const location = useSelector((state) => state.locations.locations);
+
+  useEffect(() => {
+    console.log(location); //testing state access
+    console.log(selectedValue); //testing if color is forwarded from child MarkerSetup
+    console.log(inputValue);
+  }, [location]);
+
   const mapRegion = {
     latitude: 43.830109,
     longitude: 18.344889,
@@ -37,7 +53,15 @@ const MapScreen = (props) => {
       return;
     }
     props.navigation.navigate('NewPlace', { pickedLocation: selectedLocation });
-  }, [selectedLocation]);
+    dispatch(
+      setLocation(
+        selectedValue,
+        inputValue,
+        selectedLocation.lng,
+        selectedLocation.lat
+      )
+    );
+  }, [selectedLocation, dispatch, selectedValue, inputValue]);
 
   let markerCoordinates;
 
@@ -74,15 +98,20 @@ const MapScreen = (props) => {
             title="Picked Location"
             coordinate={markerCoordinates}
           >
-            <View style={{ backgroundColor: 'yellow', padding: 10 }}>
+            {/* <View style={{ backgroundColor: 'yellow', padding: 10 }}>
               <Text>Kamp</Text>
-            </View>
+            </View> */}
           </Marker>
         )}
       </MapView>
       {selectedLocation && (
         <View style={styles.setupContainer}>
-          <MarkerSetup />
+          <MarkerSetup
+            inputValue={inputValue}
+            selectedValue={selectedValue}
+            onPickerChange={(e) => setSelectedValue(e)}
+            onEnteredValue={(e) => setInputValue(e)}
+          />
         </View>
       )}
     </View>
