@@ -18,13 +18,12 @@ const LocationPicker = (props) => {
   const [pickedLocation, setPickedLocation] = useState();
   const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(() => {
-    if (props.route.params?.pickedLocation) {
-      const mapPickedLocation = props.route.params.pickedLocation;
-      console.log(mapPickedLocation);
-      setPickedLocation(mapPickedLocation);
-    }
-  }, [props.route.params?.pickedLocation]);
+  // useEffect(() => {
+  //   if (props.route.params?.pickedLocation) {
+  //     const mapPickedLocation = props.route.params.pickedLocation;
+  //     setPickedLocation(mapPickedLocation);
+  //   }
+  // }, [props.route.params?.pickedLocation]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -62,8 +61,12 @@ const LocationPicker = (props) => {
     setIsFetching(false);
   };
 
+  useEffect(() => {
+    getLocationHandler();
+  }, []);
+
   const pickOnMapHandler = () => {
-    props.navigation.navigate('MapScreen');
+    props.navigation.navigate('MapScreen', { currentLocation: pickedLocation });
   };
   return (
     <View style={styles.locationPicker}>
@@ -79,11 +82,11 @@ const LocationPicker = (props) => {
         )}
       </MapPreview>
       <View style={styles.actions}>
-        <Button
+        {/* <Button
           title="Get location"
           color={Colors.accent}
           onPress={getLocationHandler}
-        />
+        /> */}
         <Button
           title="Pick on Map"
           color={Colors.accent}

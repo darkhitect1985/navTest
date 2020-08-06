@@ -1,10 +1,10 @@
 class Location {
-  constructor(id, title, color, isCurrent, locaLang, locLat) {
+  constructor(id, title, color, isCurrent, locLang, locLat) {
     this.id = id;
     this.title = title;
     this.color = color;
     this.isCurrent = isCurrent;
-    this.locaLang = locaLang;
+    this.locLang = locLang;
     this.locLat = locLat;
   }
 }

@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
         action.lng,
         action.lat
       );
-      //Location (id, title, color, isCurrent, locaLang, locLat)
+      //Location (id, title, color, isCurrent, locLang, locLat)
       return {
         ...state,
         locations: state.locations.concat(newLocation),

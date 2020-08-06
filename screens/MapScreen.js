@@ -8,26 +8,50 @@ import {
   Platform,
   Alert,
   View,
+  ActivityIndicator,
 } from 'react-native';
 
-import MarkerSetup from '../components/MarkerSetup';
+import MarkerSetup from '../components/MarkerSetup'; //marker color and name setup
 
-import { setLocation } from '../store/actions/locations';
+import { setLocation } from '../store/actions/locations'; //redux action
+import CombinedMarkers from '../components/CombinedMarkers';
 
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
+  const [currentMapLocation, setcurrentMapLocation] = useState();
   const [selectedValue, setSelectedValue] = useState('red');
   const [inputValue, setInputValue] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const dispatch = useDispatch();
 
   const location = useSelector((state) => state.locations.locations);
 
   useEffect(() => {
-    console.log(location); //testing state access
-    console.log(selectedValue); //testing if color is forwarded from child MarkerSetup
-    console.log(inputValue);
-  }, [location]);
+    if (props.route.params?.currentLocation) {
+      const currentMapLocation = props.route.params.currentLocation;
+      setcurrentMapLocation(currentMapLocation);
+    }
+  }, [props.route.params?.currentLocation]);
+  //console.log(selectedLocation.lng + ' hhh');
+
+  useEffect(() => {
+    if (currentMapLocation === undefined) {
+      setIsFetching(true);
+      console.log('undefined');
+      console.log(isFetching);
+    } else {
+      setIsFetching(false);
+      console.log(currentMapLocation.lng + ' defined');
+      console.log(isFetching);
+    }
+  }, [selectedLocation, isFetching]); //testing when location is forwarded
+
+  // useEffect(() => {
+  //   console.log(location); //testing state access
+  //   console.log(selectedValue); //testing if color is forwarded from child MarkerSetup
+  //   console.log(inputValue);
+  // }, [location]);
 
   const mapRegion = {
     latitude: 43.830109,
@@ -52,7 +76,10 @@ const MapScreen = (props) => {
       );
       return;
     }
-    props.navigation.navigate('NewPlace', { pickedLocation: selectedLocation });
+    props.navigation.navigate(
+      'NewPlace'
+      // , { pickedLocation: selectedLocation }
+    );
     dispatch(
       setLocation(
         selectedValue,
@@ -87,31 +114,34 @@ const MapScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <MapView
-        region={mapRegion}
-        style={styles.mapStyle}
-        onPress={selectLocationHandler}
-      >
-        {markerCoordinates && (
-          <Marker
-            draggable
-            title="Picked Location"
-            coordinate={markerCoordinates}
+      {isFetching ? (
+        <ActivityIndicator size="large" color={'black'} />
+      ) : (
+        <View style={styles.container}>
+          <MapView
+            region={mapRegion}
+            style={styles.mapStyle}
+            onPress={selectLocationHandler}
           >
-            {/* <View style={{ backgroundColor: 'yellow', padding: 10 }}>
-              <Text>Kamp</Text>
-            </View> */}
-          </Marker>
-        )}
-      </MapView>
-      {selectedLocation && (
-        <View style={styles.setupContainer}>
-          <MarkerSetup
-            inputValue={inputValue}
-            selectedValue={selectedValue}
-            onPickerChange={(e) => setSelectedValue(e)}
-            onEnteredValue={(e) => setInputValue(e)}
-          />
+            <CombinedMarkers />
+            {markerCoordinates && (
+              <Marker
+                draggable
+                title="Picked Location"
+                coordinate={markerCoordinates}
+              ></Marker>
+            )}
+          </MapView>
+          {selectedLocation && (
+            <View style={styles.setupContainer}>
+              <MarkerSetup
+                inputValue={inputValue}
+                selectedValue={selectedValue}
+                onPickerChange={(e) => setSelectedValue(e)}
+                onEnteredValue={(e) => setInputValue(e)}
+              />
+            </View>
+          )}
         </View>
       )}
     </View>
