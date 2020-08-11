@@ -18,10 +18,15 @@ import CombinedMarkers from '../components/CombinedMarkers';
 
 const MapScreen = (props) => {
   const [selectedLocation, setSelectedLocation] = useState();
-  const [currentMapLocation, setcurrentMapLocation] = useState();
+  const [currentMapLocation, setcurrentMapLocation] = useState({
+    lat: 37.4218846,
+    lng: -122.0837918,
+  });
   const [selectedValue, setSelectedValue] = useState('red');
   const [inputValue, setInputValue] = useState('');
   const [isFetching, setIsFetching] = useState(false);
+
+  console.log(selectedLocation + 'DDD');
 
   const dispatch = useDispatch();
 
@@ -35,27 +40,31 @@ const MapScreen = (props) => {
   }, [props.route.params?.currentLocation]);
   //console.log(selectedLocation.lng + ' hhh');
 
-  useEffect(() => {
-    if (currentMapLocation === undefined) {
-      setIsFetching(true);
-      console.log('undefined');
-      console.log(isFetching);
-    } else {
-      setIsFetching(false);
-      console.log(currentMapLocation.lng + ' defined');
-      console.log(isFetching);
-    }
-  }, [selectedLocation, isFetching]); //testing when location is forwarded
+  // useEffect(() => {
+  //   if (currentMapLocation === undefined) {
+  //     setIsFetching(true);
+  //     console.log('undefined');
+  //     console.log(isFetching);
+  //   } else {
+  //     setIsFetching(false);
+  //     console.log(currentMapLocation.lng + ' defined');
+  //     console.log(isFetching);
+  //   }
+  // }, [selectedLocation, isFetching]); //testing when location is forwarded
 
   // useEffect(() => {
   //   console.log(location); //testing state access
   //   console.log(selectedValue); //testing if color is forwarded from child MarkerSetup
   //   console.log(inputValue);
   // }, [location]);
+  let focusLocation = currentMapLocation;
+  if (selectedLocation) {
+    focusLocation = selectedLocation;
+  }
 
   const mapRegion = {
-    latitude: 43.830109,
-    longitude: 18.344889,
+    latitude: focusLocation.lat,
+    longitude: focusLocation.lng,
     latitudeDelta: 0.005,
     longitudeDelta: 0.002,
   };
@@ -76,10 +85,7 @@ const MapScreen = (props) => {
       );
       return;
     }
-    props.navigation.navigate(
-      'NewPlace'
-      // , { pickedLocation: selectedLocation }
-    );
+    props.navigation.navigate('NewPlace', { pickedLocation: selectedLocation });
     dispatch(
       setLocation(
         selectedValue,
@@ -131,6 +137,13 @@ const MapScreen = (props) => {
                 coordinate={markerCoordinates}
               ></Marker>
             )}
+            <Marker
+              title="Current Location"
+              coordinate={{
+                latitude: currentMapLocation.lat,
+                longitude: currentMapLocation.lng,
+              }}
+            ></Marker>
           </MapView>
           {selectedLocation && (
             <View style={styles.setupContainer}>
