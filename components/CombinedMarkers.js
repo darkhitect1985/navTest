@@ -14,7 +14,7 @@ const CombinedMarkers = (props) => {
     let color = props.color;
     return (
       <View>
-        <Marker draggable title={props.title} coordinate={coord}>
+        <Marker title={props.title} coordinate={coord}>
           <View style={{ backgroundColor: color, padding: 5 }}>
             <Text>{props.title}</Text>
           </View>

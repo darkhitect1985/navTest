@@ -4,25 +4,24 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
-  Button
+  Button,
 } from 'react-native';
 import Colors from '../constants/Colors';
 
+import LocationItem from '../components/LocationItem';
 
-
-const StartupScreen = props => {
+const StartupScreen = (props) => {
   return (
     <View style={styles.screen}>
-      <Text>Testing completed</Text>
-      <ActivityIndicator size="large" color={"black"} />
+      <LocationItem />
       <Button
-          onPress={() => {
-            props.navigation.navigate('NewPlace');
-            }}
-            title="New Place"
-            color={Colors.primary}
-            accessibilityLabel="Learn more about this purple button"
-          />
+        onPress={() => {
+          props.navigation.navigate('NewPlace');
+        }}
+        title="New Place"
+        color={Colors.primary}
+        accessibilityLabel="Learn more about this purple button"
+      />
     </View>
   );
 };
@@ -31,8 +30,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default StartupScreen;

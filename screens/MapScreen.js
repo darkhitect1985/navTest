@@ -127,12 +127,12 @@ const MapScreen = (props) => {
           <MapView
             region={mapRegion}
             style={styles.mapStyle}
+            mapType="satellite"
             onPress={selectLocationHandler}
           >
             <CombinedMarkers />
             {markerCoordinates && (
               <Marker
-                draggable
                 title="Picked Location"
                 coordinate={markerCoordinates}
               ></Marker>

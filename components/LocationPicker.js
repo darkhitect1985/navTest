@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   mapPreview: {
     marginBottom: 10,
-    width: '80%',
+    width: '100%',
     height: '80%',
     borderColor: '#ccc',
     borderWidth: 1,

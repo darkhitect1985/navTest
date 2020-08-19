@@ -1,4 +1,5 @@
 export const SET_LOCATIONS = 'SET_LOCATIONS';
+export const REMOVE_LOCATION = 'REMOVE_LOCATION';
 
 export const setLocation = (color, title, lng, lat) => {
   return {
@@ -7,5 +8,12 @@ export const setLocation = (color, title, lng, lat) => {
     title: title,
     lng: lng,
     lat: lat,
+  };
+};
+
+export const removeLocation = (item) => {
+  return {
+    type: REMOVE_LOCATION,
+    item: item,
   };
 };
